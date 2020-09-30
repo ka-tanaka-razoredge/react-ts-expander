@@ -9,6 +9,8 @@ interface ExpanderState {
   borderColor: string,
   isSelected: boolean,
   height: number,
+  mouseX: number,
+  mouseY: number;
 }
 
 export class Expander extends Component<ExpanderProps, ExpanderState> {
@@ -19,6 +21,8 @@ export class Expander extends Component<ExpanderProps, ExpanderState> {
       borderColor: 'blue',
       isSelected: false,
       height: 20,
+      mouseX: -1234567890,
+      mouseY: -1234567890,
     };
   }
 
@@ -34,8 +38,21 @@ export class Expander extends Component<ExpanderProps, ExpanderState> {
 
   modify(e) {
     if (this.state.isSelected) {
-      this.setState({height: this.state.height + 1});
+      let mX = e.pageX;
+      let mY = e.pageY;
+
+
+      if (mY < this.state.mouseY) {
+        this.setState({height: this.state.height - 1.25});
+      } else {
+        this.setState({height: this.state.height + 1.25});
+      }
+
+
       this.props.doIt(this.state.height);
+
+      this.setState({mouseX: e.pageX});
+      this.setState({mouseY: e.pageY});
     }
   }
 
